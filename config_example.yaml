@@ -1,0 +1,5 @@
+# Copy this file to config.yaml and populate
+
+auth:
+  user_id: # number
+  token: # api token

@@ -1,0 +1,3 @@
+natlibpy
+pyyaml
+requests
