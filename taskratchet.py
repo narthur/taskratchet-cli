@@ -1,18 +1,27 @@
 #!/usr/bin/env python3
 
-import sys
+"""TaskRatchet CLI.
+
+Usage:
+  taskratchet.py <method> <endpoint> [--staging]
+
+Options:
+  -h --help     Show this screen.
+  --staging     Use staging server.
+
+"""
+
 from natlibpy.factory import Factory
 from tr_cli.cli import Cli
+from docopt import docopt
 
 factory = Factory()
 cli = factory.secure(Cli)
-args = sys.argv[1:]
+args = docopt(__doc__)
 
-if len(args) < 2:
-    print('Usage: <command> <arg1> <arg2> ...')
-    exit()
+print(args)
 
-response = cli.run(*args)
+response = cli.run(args)
 
 print(response)
 print(response.text)

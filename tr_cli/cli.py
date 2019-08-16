@@ -19,8 +19,14 @@ class Cli:
 
         self._api.authenticate(user_id, token)
 
-    def run(self, command, *args):
-        if command == 'post':
-            return self._api.post(args[0])
+    def run(self, args):
+        command = args['<method>']
+        endpoint = args['<endpoint>']
+        staging = args['--staging']
 
-        return self._api.get(args[0])
+        self._api.set_staging(staging)
+
+        if command == 'post':
+            return self._api.post(endpoint)
+
+        return self._api.get(endpoint)

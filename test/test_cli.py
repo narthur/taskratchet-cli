@@ -16,8 +16,15 @@ class TestCli(TestCase):
 
         self._cli = self._factory.secure(Cli)
 
+    def _runRequest(self, method, endpoint, staging=False):
+        return self._cli.run({
+            '--staging': staging,
+            '<endpoint>': endpoint,
+            '<method>': method
+        })
+
     def test_arbitrary_post(self):
-        self._cli.run("post", "endpoint")
+        self._runRequest("post", "endpoint")
 
         self._mock_api.post.assert_any_call("endpoint")
 
@@ -30,26 +37,31 @@ class TestCli(TestCase):
     def test_returns_api_response(self):
         self._mock_api.post.return_value = 'response'
 
-        result = self._cli.run("post", "endpoint")
+        result = self._runRequest("post", "endpoint")
 
         self.assertEqual('response', result)
 
     def test_get_command(self):
-        self._cli.run("get", "endpoint")
+        self._runRequest("get", "endpoint")
 
         self._mock_api.get.assert_any_call("endpoint")
 
     def test_get_does_not_post(self):
-        self._cli.run("get", "endpoint")
+        self._runRequest("get", "endpoint")
 
         self._mock_api.post.assert_not_called()
 
     def test_returns_get_response(self):
         self._mock_api.get.return_value = 'response'
 
-        result = self._cli.run("get", "endpoint")
+        result = self._runRequest("get", "endpoint")
 
         self.assertEqual('response', result)
+
+    def test_sets_api_staging(self):
+        self._runRequest("get", "endpoint", True)
+
+        self._mock_api.set_staging.assert_called()
 
 
 if __name__ == '__main__':

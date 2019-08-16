@@ -1,3 +1,4 @@
 natlibpy
 pyyaml
 requests
+docopt
