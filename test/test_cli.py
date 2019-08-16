@@ -34,6 +34,23 @@ class TestCli(TestCase):
 
         self.assertEqual('response', result)
 
+    def test_get_command(self):
+        self._cli.run("get", "endpoint")
+
+        self._mock_api.get.assert_any_call("endpoint")
+
+    def test_get_does_not_post(self):
+        self._cli.run("get", "endpoint")
+
+        self._mock_api.post.assert_not_called()
+
+    def test_returns_get_response(self):
+        self._mock_api.get.return_value = 'response'
+
+        result = self._cli.run("get", "endpoint")
+
+        self.assertEqual('response', result)
+
 
 if __name__ == '__main__':
     unittest.main()
